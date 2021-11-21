@@ -1,4 +1,4 @@
-//version: 21647c763d3f6c90d59c900edae1248239c49dfb
+//version: c6baa89c674cfdf4789c3a5e8cb654153efb1b10
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -166,7 +166,7 @@ minecraft {
         if(gradleTokenModName) {
             replace gradleTokenModName, modName
         }
-        if(gradleTokenModName) {
+        if(gradleTokenVersion) {
             replace gradleTokenVersion, versionDetails().lastTag
         }
         if(gradleTokenGroupName) {
@@ -362,27 +362,27 @@ runServer {
 }
 
 processResources
-        {
-            // this will ensure that this task is redone when the versions change.
-            inputs.property "version", project.version
-            inputs.property "mcversion", project.minecraft.version
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
 
-            // replace stuff in mcmod.info, nothing else
-            from(sourceSets.main.resources.srcDirs) {
-                include 'mcmod.info'
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
 
-                // replace version and mcversion
-                expand "minecraftVersion": project.minecraft.version,
-                        "modVersion": versionDetails().lastTag,
-                        "modId": modId,
-                        "modName": modName
-            }
+        // replace version and mcversion
+        expand "minecraftVersion": project.minecraft.version,
+                "modVersion": versionDetails().lastTag,
+                "modId": modId,
+                "modName": modName
+    }
 
-            // copy everything else, thats not the mcmod.info
-            from(sourceSets.main.resources.srcDirs) {
-                exclude 'mcmod.info'
-            }
-        }
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
 
 task sourcesJar(type: Jar) {
     from (sourceSets.main.allJava)
