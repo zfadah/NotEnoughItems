@@ -1,3 +1,4 @@
+//version: 21647c763d3f6c90d59c900edae1248239c49dfb
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -7,6 +8,7 @@ Please check https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/build.gradl
 
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
 import java.util.concurrent.TimeUnit
 
 buildscript {
@@ -23,9 +25,13 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+        maven {
+            name = "Scala CI dependencies"
+            url = "https://repo1.maven.org/maven2/"
+        }
     }
     dependencies {
-        classpath 'com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT'
+        classpath 'com.github.TheElan:ForgeGradle:1.2.2'
     }
 }
 
@@ -35,14 +41,101 @@ plugins {
     id("com.palantir.git-version") version("0.12.3")
 }
 
+apply plugin: 'scala'
 apply plugin: 'forge'
 apply plugin: 'idea'
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}
 
 idea {
     module {
         inheritOutputDirs = true
         downloadJavadoc = true
         downloadSources = true
+    }
+}
+
+checkPropertyExists("modName")
+checkPropertyExists("modId")
+checkPropertyExists("modGroup")
+checkPropertyExists("autoUpdateBuildScript")
+checkPropertyExists("minecraftVersion")
+checkPropertyExists("forgeVersion")
+checkPropertyExists("replaceGradleTokenInFile")
+checkPropertyExists("gradleTokenModId")
+checkPropertyExists("gradleTokenModName")
+checkPropertyExists("gradleTokenVersion")
+checkPropertyExists("gradleTokenGroupName")
+checkPropertyExists("apiPackage")
+checkPropertyExists("accessTransformersFile")
+checkPropertyExists("usesMixins")
+checkPropertyExists("mixinPlugin")
+checkPropertyExists("mixinsPackage")
+checkPropertyExists("coreModClass")
+checkPropertyExists("containsMixinsAndOrCoreModOnly")
+checkPropertyExists("usesShadowedDependencies")
+checkPropertyExists("developmentEnvironmentUserName")
+
+def checkPropertyExists(String propertyName) {
+    if (project.hasProperty(propertyName) == false) {
+        throw new GradleException("This project requires a property \"" + propertyName + "\"! Please add it your \"gradle.properties\". You can find all properties and their description here: https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/gradle.properties")
+    }
+}
+
+
+String javaSourceDir = "src/main/java/"
+String scalaSourceDir = "src/main/scala/"
+
+String targetPackageJava = javaSourceDir + modGroup.toString().replaceAll("\\.", "/")
+String targetPackageScala = scalaSourceDir + modGroup.toString().replaceAll("\\.", "/")
+if((new File(targetPackageJava).exists() || new File(targetPackageScala).exists()) == false) {
+    throw new GradleException("Could not resolve \"modGroup\"! Could not find " + targetPackageJava + " or " + targetPackageScala)
+}
+
+if(apiPackage) {
+    targetPackageJava = javaSourceDir + modGroup.toString().replaceAll("\\.", "/") + "/" + apiPackage.toString().replaceAll("\\.", "/")
+    targetPackageScala = scalaSourceDir + modGroup.toString().replaceAll("\\.", "/") + "/" + apiPackage.toString().replaceAll("\\.", "/")
+    if((new File(targetPackageJava).exists() || new File(targetPackageScala).exists()) == false) {
+        throw new GradleException("Could not resolve \"apiPackage\"! Could not find " + targetPackageJava + " or " + targetPackageScala)
+    }
+}
+
+if(accessTransformersFile) {
+    String targetFile = "src/main/resources/META-INF/" + accessTransformersFile
+    if(new File(targetFile).exists() == false) {
+        throw new GradleException("Could not resolve \"accessTransformersFile\"! Could not find " + targetFile)
+    }
+}
+
+if(usesMixins.toBoolean()) {
+    if(mixinsPackage.isEmpty() || mixinPlugin.isEmpty()) {
+        throw new GradleException("\"mixinPlugin\" requires \"mixinsPackage\" and \"mixinPlugin\" to be set!")
+    }
+
+    targetPackageJava = javaSourceDir + modGroup.toString().replaceAll("\\.", "/") + "/" + mixinsPackage.toString().replaceAll("\\.", "/")
+    targetPackageScala = scalaSourceDir + modGroup.toString().replaceAll("\\.", "/") + "/" + mixinsPackage.toString().replaceAll("\\.", "/")
+    if((new File(targetPackageJava).exists() || new File(targetPackageScala).exists()) == false) {
+        throw new GradleException("Could not resolve \"mixinsPackage\"! Could not find " + targetPackageJava + " or " + targetPackageScala)
+    }
+
+    String targetFileJava = javaSourceDir + modGroup.toString().replaceAll("\\.", "/") + "/" + mixinPlugin.toString().replaceAll("\\.", "/") + ".java"
+    String targetFileScala = scalaSourceDir + modGroup.toString().replaceAll("\\.", "/") + "/" + mixinPlugin.toString().replaceAll("\\.", "/") + ".scala"
+    String targetFileScalaJava = scalaSourceDir + modGroup.toString().replaceAll("\\.", "/") + "/" + mixinPlugin.toString().replaceAll("\\.", "/") + ".java"
+    if((new File(targetFileJava).exists() || new File(targetFileScala).exists() || new File(targetFileScalaJava).exists()) == false) {
+        throw new GradleException("Could not resolve \"mixinPlugin\"! Could not find " + targetFileJava + " or " + targetFileScala + " or " + targetFileScalaJava)
+    }
+}
+
+if(coreModClass) {
+    String targetFileJava = javaSourceDir + modGroup.toString().replaceAll("\\.", "/") + "/" + coreModClass.toString().replaceAll("\\.", "/") + ".java"
+    String targetFileScala = scalaSourceDir + modGroup.toString().replaceAll("\\.", "/") + "/" + coreModClass.toString().replaceAll("\\.", "/") + ".scala"
+    String targetFileScalaJava = scalaSourceDir + modGroup.toString().replaceAll("\\.", "/") + "/" + coreModClass.toString().replaceAll("\\.", "/") + ".java"
+    if((new File(targetFileJava).exists() || new File(targetFileScala).exists() || new File(targetFileScalaJava).exists()) == false) {
+        throw new GradleException("Could not resolve \"coreModClass\"! Could not find " + targetFileJava + " or " + targetFileScala + " or " + targetFileScalaJava)
     }
 }
 
@@ -54,16 +147,14 @@ configurations.all {
     System.setProperty("org.gradle.internal.http.socketTimeout", 120000 as String)
 }
 
+// Fix Jenkins' Git: chmod a file should not be detected as a change and append a '.dirty' to the version
+'git config core.fileMode false'.execute()
 // Pulls version from git tag
 version = minecraftVersion + "-" + gitVersion()
 group = modGroup
 archivesBaseName = modId
 
 minecraft {
-    if(JavaVersion.current() != JavaVersion.VERSION_1_8) {
-        throw new GradleException("This project requires Java 8, but it's running on " + JavaVersion.current())
-    }
-
     version = minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion
     runDir = "run"
 
@@ -82,6 +173,10 @@ minecraft {
             replace gradleTokenGroupName, modGroup
         }
     }
+}
+
+if(file("addon.gradle").exists()) {
+    apply from: "addon.gradle"
 }
 
 apply from: 'repositories.gradle'
@@ -267,27 +362,27 @@ runServer {
 }
 
 processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+        {
+            // this will ensure that this task is redone when the versions change.
+            inputs.property "version", project.version
+            inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
+            // replace stuff in mcmod.info, nothing else
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
 
-        // replace version and mcversion
-        expand "minecraftVersion": project.minecraft.version,
-                "modVersion": versionDetails().lastTag,
-                "modId": modId,
-                "modName": modName
-    }
+                // replace version and mcversion
+                expand "minecraftVersion": project.minecraft.version,
+                        "modVersion": versionDetails().lastTag,
+                        "modId": modId,
+                        "modName": modName
+            }
 
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
+            // copy everything else, thats not the mcmod.info
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+        }
 
 task sourcesJar(type: Jar) {
     from (sourceSets.main.allJava)
@@ -366,11 +461,66 @@ task apiJar(type: Jar) {
     getArchiveClassifier().set('api')
 }
 
-
 artifacts {
     archives sourcesJar
     archives devJar
     if(apiPackage) {
         archives apiJar
     }
+}
+
+// Updating
+task updateBuildScript {
+    doLast {
+        if (updateBuildScript()) return
+
+        print("Build script already up-to-date!")
+    }
+}
+
+if (isNewBuildScriptVersionAvailable()) {
+    if (autoUpdateBuildScript.toBoolean()) {
+        updateBuildScript()
+    } else {
+        println("Build script update available! Run 'gradle updateBuildScript'")
+    }
+}
+
+static URL availableBuildScriptUrl() {
+    new URL("https://raw.githubusercontent.com/SinTh0r4s/ExampleMod1.7.10/main/build.gradle")
+}
+
+static boolean updateBuildScript() {
+    if (isNewBuildScriptVersionAvailable()) {
+        def buildscriptFile = new File("build.gradle")
+        availableBuildScriptUrl().withInputStream { i -> buildscriptFile.withOutputStream { it << i } }
+        print("Build script updated. Please REIMPORT the project or RESTART your IDE!")
+        return true
+    }
+    return false
+}
+
+static boolean isNewBuildScriptVersionAvailable() {
+    Map parameters = ["connectTimeout": 2000, "readTimeout": 2000]
+
+    String currentBuildScript = new File("build.gradle").getText()
+    String currentBuildScriptHash = getVersionHash(currentBuildScript)
+    String availableBuildScript = availableBuildScriptUrl().newInputStream(parameters).getText()
+    String availableBuildScriptHash = getVersionHash(availableBuildScript)
+
+    boolean isUpToDate = currentBuildScriptHash.empty || availableBuildScriptHash.empty || currentBuildScriptHash == availableBuildScriptHash
+    return !isUpToDate
+}
+
+static String getVersionHash(String buildScriptContent) {
+    String versionLine = buildScriptContent.find("^//version: [a-z0-9]*")
+    if(versionLine != null) {
+        return versionLine.split(": ").last()
+    }
+    return ""
+}
+
+configure(updateBuildScript) {
+    group = 'forgegradle'
+    description = 'Updates the build script to the latest version'
 }

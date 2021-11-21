@@ -1,8 +1,8 @@
 // Add any additional repositiroes for your dependencies here
 
 repositories {
+    mavenCentral()
     maven {
-        name = "chickenbones"
-        url = "http://chickenbones.net/maven"
+        url = "https://jitpack.io"
     }
 }
