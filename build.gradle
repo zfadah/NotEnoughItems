@@ -1,4 +1,4 @@
-//version: 5f807e49331e4448b174643357b8381563101f6f
+//version: d1e6245a00078f0b365db7a0fb11de296f4e6c62
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -419,7 +419,7 @@ task devJar(type: Jar) {
     }
 
     if(usesShadowedDependencies.toBoolean()) {
-        dependsOn(shadowDevJar)
+        dependsOn(circularResolverJar)
         enabled = false
     }
 }
@@ -442,7 +442,7 @@ task apiJar(type: Jar) {
 
 artifacts {
     archives sourcesJar
-    archives circularResolverJar
+    archives devJar
     if(apiPackage) {
         archives apiJar
     }
