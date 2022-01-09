@@ -5,7 +5,11 @@ import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import net.minecraft.item.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RecipeCatalysts {
     private static final Map<Class<? extends IRecipeHandler>, List<ItemStack>> recipeCatalystMap = new HashMap<>();
