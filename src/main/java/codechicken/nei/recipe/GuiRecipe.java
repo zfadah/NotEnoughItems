@@ -597,7 +597,9 @@ public abstract class GuiRecipe extends GuiContainer implements IGuiContainerOve
             RenderHelper.enableGUIStandardItemLighting();
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
             recipeTabs.draw(mouseX, mouseY);
-            guiRecipeCatalyst.draw();
+            if (NEIClientConfig.areJEIStyleRecipeCatalystsVisible()) {
+                guiRecipeCatalyst.draw();
+            }
             RenderHelper.disableStandardItemLighting();
         }
 

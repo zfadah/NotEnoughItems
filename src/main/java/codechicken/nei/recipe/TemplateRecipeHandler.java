@@ -556,8 +556,6 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
      * Fallback to {@link TemplateRecipeHandler#getUsageHandler}.
      */
     public IUsageHandler getUsageAndCatalystHandler(String inputId, Object... ingredients) {
-        if (!NEIClientConfig.areJEIStyleTabsVisible()) return this.getUsageHandler(inputId, ingredients);
-
         TemplateRecipeHandler handler = newInstance();
         if (inputId.equals("item")) {
             ItemStack candidate = (ItemStack) ingredients[0];

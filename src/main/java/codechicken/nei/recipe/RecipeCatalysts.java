@@ -29,7 +29,9 @@ public class RecipeCatalysts {
     }
 
     public static List<PositionedStack> getRecipeCatalysts(Class<? extends IRecipeHandler> handler) {
-        if (!NEIClientConfig.areJEIStyleTabsVisible()) return Collections.emptyList();
+        if (!NEIClientConfig.areJEIStyleTabsVisible() || !NEIClientConfig.areJEIStyleRecipeCatalystsVisible()) {
+            return Collections.emptyList();
+        }
         return positionedRecipeCatalystMap.getOrDefault(handler, Collections.emptyList());
     }
 
