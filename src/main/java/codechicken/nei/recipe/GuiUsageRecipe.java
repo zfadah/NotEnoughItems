@@ -30,7 +30,7 @@ public class GuiUsageRecipe extends GuiRecipe
                 .collect(Collectors.toCollection(ArrayList::new));
             
             handlers.addAll(ItemList.forkJoinPool.submit(() -> usagehandlers.parallelStream()
-                .map(h -> h.getUsageHandler(inputId, ingredients))
+                .map(h -> h.getUsageAndCatalystHandler(inputId, ingredients))
                 .filter(h -> h.numRecipes() > 0)
                 .collect(Collectors.toCollection(ArrayList::new))).get());
         } catch (InterruptedException | ExecutionException e) {
