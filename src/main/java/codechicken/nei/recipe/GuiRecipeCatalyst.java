@@ -1,16 +1,14 @@
 package codechicken.nei.recipe;
 
 import codechicken.nei.api.INEIGuiAdapter;
-import codechicken.nei.drawable.DrawableNineSliceTexture;
-import codechicken.nei.drawable.TextureInfo;
+import codechicken.nei.drawable.GuiElementDuex;
+import codechicken.nei.drawable.GuiElementScalable;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.util.Rectangle;
 
 public class GuiRecipeCatalyst extends INEIGuiAdapter {
-    private final DrawableNineSliceTexture catalystTabImage = new DrawableNineSliceTexture(getTextureInfo("catalyst_tab.png", 28, 28).slice(6, 6, 6, 6));
-    private final DrawableNineSliceTexture slotImage = new DrawableNineSliceTexture(getTextureInfo("slot.png", 18, 18).slice(1, 1, 1, 1));
-
     private GuiRecipe guiRecipe;
     public static final int ingredientSize = 16;
     public static final int ingredientBorder = 1;
@@ -32,19 +30,19 @@ public class GuiRecipeCatalyst extends INEIGuiAdapter {
         int availableHeight = RecipeCatalysts.getHeight();
         int columnCount = RecipeCatalysts.getColumnCount(availableHeight, catalystsSize);
         int rowCount = RecipeCatalysts.getRowCount(availableHeight, catalystsSize);
-        int width, height, xOffset, yOffset;
+        int width, height, xPos, yPos;
 
         width = (ingredientBorder * 2) + (tabBorder * 2) + (columnCount * ingredientSize);
         height = (ingredientBorder * 2) + (tabBorder * 2) + (rowCount * ingredientSize);
-        xOffset = guiRecipe.guiLeft - width + tabBorder;
-        yOffset = guiRecipe.guiTop;
-        catalystTabImage.draw(xOffset, yOffset, width, height);
+        xPos = guiRecipe.guiLeft - width + tabBorder;
+        yPos = guiRecipe.guiTop;
+        drawBordered("nei:textures/catalyst_tab.png", xPos, yPos, width, height, 28, 28, 6, 7, 6, 6);
 
         width = (ingredientBorder * 2) + (columnCount * ingredientSize);
         height = (ingredientBorder * 2) + (rowCount * ingredientSize);
-        xOffset = guiRecipe.guiLeft - width + ingredientBorder;
-        yOffset = guiRecipe.guiTop + fullBorder - ingredientBorder;
-        slotImage.draw(xOffset, yOffset, width, height);
+        xPos = guiRecipe.guiLeft - width + ingredientBorder;
+        yPos = guiRecipe.guiTop + fullBorder - ingredientBorder;
+        drawBordered("nei:textures/slot.png", xPos, yPos, width, height, 18, 18, 1, 1, 1, 1);
     }
 
     @Override
@@ -68,8 +66,42 @@ public class GuiRecipeCatalyst extends INEIGuiAdapter {
         return targetRect.intersects(catalystRect);
     }
 
-    private TextureInfo getTextureInfo(String name, int width, int height) {
-        ResourceLocation location = new ResourceLocation("nei:textures/" + name);
-        return new TextureInfo(location, width, height);
+    private void drawBordered(String location, int xPos, int yPos, int width, int height, int texWidth, int texHeight, int sliceLeft, int sliceRight, int sliceTop, int sliceBottom) {
+        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(location));
+
+        GuiElementDuex cornerTopLeft = new GuiElementDuex(0, 0, sliceLeft, sliceTop, texWidth, texHeight);
+        GuiElementDuex cornerTopRight = new GuiElementDuex(texWidth - sliceRight, 0, sliceRight, sliceTop, texWidth, texHeight);
+        GuiElementDuex cornerBottomLeft = new GuiElementDuex(0, texHeight - sliceBottom, sliceLeft, sliceBottom, texWidth, texHeight);
+        GuiElementDuex cornerBottomRight = new GuiElementDuex(texWidth - sliceRight, texHeight - sliceBottom, sliceRight, sliceBottom, texWidth, texHeight);
+
+        GuiElementScalable borderTop = new GuiElementScalable(sliceLeft, 0, texWidth - sliceLeft - sliceRight, sliceTop, texWidth, texHeight);
+        GuiElementScalable borderBottom = new GuiElementScalable(sliceLeft, texHeight - sliceBottom, texWidth - sliceLeft - sliceRight, sliceBottom, texWidth, texHeight);
+        GuiElementScalable borderLeft = new GuiElementScalable(0, sliceTop, sliceLeft, texHeight - sliceTop - sliceBottom, texWidth, texHeight);
+        GuiElementScalable borderRight = new GuiElementScalable(texWidth - sliceRight, sliceTop, sliceRight, texHeight - sliceTop - sliceBottom, texWidth, texHeight);
+        GuiElementScalable center = new GuiElementScalable(sliceLeft, sliceTop, texWidth - sliceLeft - sliceRight, texHeight - sliceTop - sliceBottom, texWidth, texHeight);
+
+        int midW = width - borderLeft.w - borderRight.w;
+        int midH = height - borderTop.h - borderBottom.h;
+
+        // top row
+        int x = xPos;
+        int y = yPos;
+        x += cornerTopLeft.draw(x, y);
+        x += borderTop.drawScaledX(x, y, midW);
+        cornerTopRight.draw(x, y);
+
+        // center row
+        x = xPos;
+        y += borderTop.h;
+        x += borderLeft.drawScaledY(x, y, midH);
+        x += center.drawScaled(x, y, midW, midH);
+        borderRight.drawScaledY(x, y, midH);
+
+        // bottom row
+        x = xPos;
+        y += midH;
+        x += cornerBottomLeft.draw(x, y);
+        x += borderBottom.drawScaledX(x, y, midW);
+        cornerBottomRight.draw(x, y);
     }
 }
