@@ -509,7 +509,7 @@ public abstract class GuiRecipe extends GuiContainer implements IGuiContainerOve
 
             List<PositionedStack> catalysts = RecipeCatalysts.getRecipeCatalysts(handler.getClass());
             for (PositionedStack catalyst : catalysts) {
-                int xOffset = -GuiRecipeCatalyst.ingredientSize;
+                int xOffset = -GuiRecipeCatalyst.ingredientSize + 1;
                 int yOffset = BG_TOP_Y + GuiRecipeCatalyst.fullBorder;
                 slotcontainer.addSlot(catalyst, xOffset, yOffset);
             }

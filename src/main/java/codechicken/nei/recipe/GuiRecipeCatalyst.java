@@ -34,13 +34,13 @@ public class GuiRecipeCatalyst extends INEIGuiAdapter {
 
         width = (ingredientBorder * 2) + (tabBorder * 2) + (columnCount * ingredientSize);
         height = (ingredientBorder * 2) + (tabBorder * 2) + (rowCount * ingredientSize);
-        xPos = guiRecipe.guiLeft - width + tabBorder;
+        xPos = guiRecipe.guiLeft - width + tabBorder + 1;
         yPos = guiRecipe.guiTop;
         drawBordered("nei:textures/catalyst_tab.png", xPos, yPos, width, height, 28, 28, 6, 7, 6, 6);
 
         width = (ingredientBorder * 2) + (columnCount * ingredientSize);
         height = (ingredientBorder * 2) + (rowCount * ingredientSize);
-        xPos = guiRecipe.guiLeft - width + ingredientBorder;
+        xPos = guiRecipe.guiLeft - width + ingredientBorder + 1;
         yPos = guiRecipe.guiTop + fullBorder - ingredientBorder;
         drawBordered("nei:textures/slot.png", xPos, yPos, width, height, 18, 18, 1, 1, 1, 1);
     }
