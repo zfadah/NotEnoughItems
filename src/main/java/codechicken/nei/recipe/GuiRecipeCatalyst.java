@@ -36,7 +36,7 @@ public class GuiRecipeCatalyst extends INEIGuiAdapter {
         height = (ingredientBorder * 2) + (tabBorder * 2) + (rowCount * ingredientSize);
         xPos = guiRecipe.guiLeft - width + tabBorder + 1;
         yPos = guiRecipe.guiTop;
-        drawBordered("nei:textures/catalyst_tab.png", xPos, yPos, width, height, 28, 28, 6, 7, 6, 6);
+        drawBordered("nei:textures/catalyst_tab.png", xPos, yPos, width, height, 28, 28, 6, 6, 6, 6);
 
         width = (ingredientBorder * 2) + (columnCount * ingredientSize);
         height = (ingredientBorder * 2) + (rowCount * ingredientSize);
