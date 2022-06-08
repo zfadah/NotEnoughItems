@@ -93,6 +93,7 @@ gt.recipe.arcfurnace,GregTech,gregtech:gt.blockmachines:651,,gregtech,TRUE,grega
 gt.recipe.assembler,GregTech,gregtech:gt.blockmachines:211,,gregtech,TRUE,gregapi_post,6,145,166,2,,,,,,
 gt.recipe.autoclave,GregTech,gregtech:gt.blockmachines:571,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
 gt.recipe.blastfurnace,GregTech,gregtech:gt.blockmachines:1000,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
+gt.recipe.plasmaforge,GregTech,gregtech:gt.blockmachines:1004,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
 gt.recipe.brewer,GregTech,gregtech:gt.blockmachines:491,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
 gt.recipe.byproductlist,GregTech,gregtech:gt.metaitem.01:2019,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
 gt.recipe.canner,GregTech,gregtech:gt.blockmachines:231,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
