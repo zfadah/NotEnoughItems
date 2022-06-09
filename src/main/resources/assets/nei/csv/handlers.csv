@@ -124,6 +124,7 @@ gt.recipe.fluidheater,GregTech,gregtech:gt.blockmachines:621,,gregtech,TRUE,greg
 gt.recipe.fluidnaquadahreactor,GregTech,gregtech:gt.blockmachines:1192,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
 gt.recipe.fluidsolidifier,GregTech,gregtech:gt.blockmachines:521,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
 gt.recipe.fusionreactor,GregTech,gregtech:gt.blockmachines:1193,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
+gt.recipe.complexfusionreactor,GregTech,gregtech:gt.blockmachines:1193,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
 gt.recipe.gasturbinefuel,GregTech,gregtech:gt.blockmachines:1115,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
 gt.recipe.hammer,GregTech,gregtech:gt.blockmachines:611,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
 gt.recipe.hugenaquadahreactor,GregTech,gregtech:gt.blockmachines:1188,,gregtech,TRUE,gregapi_post,6,135,166,2,,,,,,
