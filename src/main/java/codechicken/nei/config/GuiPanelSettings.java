@@ -23,6 +23,8 @@ public class GuiPanelSettings extends GuiScreenWidget {
     private PanelPlaceholder bookmarksPanel;
     private PanelPlaceholder itemsPanel;
 
+    private PanelPlaceholder historyPanel;
+
     protected static class PanelResizeButton {
         private int x;
         private int y;
@@ -220,6 +222,7 @@ public class GuiPanelSettings extends GuiScreenWidget {
 
         bookmarksPanel = new PanelPlaceholder(opt, opt.name + ".bookmarks");
         itemsPanel = new PanelPlaceholder(opt, opt.name + ".items");
+        historyPanel = new PanelPlaceholder(opt, opt.name + ".history");
     }
 
     @Override
@@ -260,9 +263,11 @@ public class GuiPanelSettings extends GuiScreenWidget {
 
         bookmarksPanel.resize(getBookmarkDefaultSize());
         itemsPanel.resize(getItemsDefaultSize());
+        historyPanel.resize(getHistoryDefaultSize());
 
         bookmarksPanel.draw(mousex, mousey);
         itemsPanel.draw(mousex, mousey);
+        historyPanel.draw(mousex, mousey);
 
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
@@ -274,18 +279,24 @@ public class GuiPanelSettings extends GuiScreenWidget {
     }
 
     protected Rectangle4i getItemsDefaultSize() {
-        return new Rectangle4i(guiLeft + xSize + 2, 2, width - (guiLeft + xSize + 4), height - 4);
+        return new Rectangle4i(guiLeft + xSize + 2, 2, width - (guiLeft + xSize + 4), height - 4 - 54);
+    }
+
+    protected Rectangle4i getHistoryDefaultSize() {
+        return new Rectangle4i(guiLeft + xSize + 2, 2 + height - 4 - 54, width - (guiLeft + xSize + 4), 54);
     }
 
     @Override
     protected void mouseClicked(int x, int y, int button) {
         bookmarksPanel.mouseClicked(x, y, button);
         itemsPanel.mouseClicked(x, y, button);
+        historyPanel.mouseClicked(x, y, button);
     }
 
     @Override
     protected void mouseMovedOrUp(int x, int y, int button) {
         bookmarksPanel.mouseMovedOrUp(x, y, button);
         itemsPanel.mouseMovedOrUp(x, y, button);
+        historyPanel.mouseMovedOrUp(x, y, button);
     }
 }

@@ -1,20 +1,7 @@
 package codechicken.nei;
 
 import static codechicken.lib.gui.GuiDraw.drawStringC;
-import static codechicken.nei.LayoutManager.bookmarkPanel;
-import static codechicken.nei.LayoutManager.bookmarksButton;
-import static codechicken.nei.LayoutManager.delete;
-import static codechicken.nei.LayoutManager.dropDown;
-import static codechicken.nei.LayoutManager.gamemode;
-import static codechicken.nei.LayoutManager.heal;
-import static codechicken.nei.LayoutManager.itemPanel;
-import static codechicken.nei.LayoutManager.itemPresenceOverlays;
-import static codechicken.nei.LayoutManager.magnet;
-import static codechicken.nei.LayoutManager.options;
-import static codechicken.nei.LayoutManager.presetsPanel;
-import static codechicken.nei.LayoutManager.rain;
-import static codechicken.nei.LayoutManager.searchField;
-import static codechicken.nei.LayoutManager.timeButtons;
+import static codechicken.nei.LayoutManager.*;
 import static codechicken.nei.NEIClientConfig.canPerformAction;
 import static codechicken.nei.NEIClientConfig.disabledActions;
 import static codechicken.nei.NEIClientConfig.getMagnetMode;
@@ -102,6 +89,7 @@ public class LayoutStyleMinecraft extends LayoutStyle {
 
         itemPanel.resize(gui);
         bookmarkPanel.resize(gui);
+        historyPanel.resize(gui);
 
         options.x = isEnabled() ? 0 : 6;
         options.y = isEnabled() ? gui.height - 22 : gui.height - 28;

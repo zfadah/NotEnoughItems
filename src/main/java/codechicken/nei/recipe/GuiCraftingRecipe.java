@@ -15,6 +15,7 @@ public class GuiCraftingRecipe extends GuiRecipe<ICraftingHandler> {
     public static ArrayList<ICraftingHandler> serialCraftingHandlers = new ArrayList<>();
 
     public static boolean openRecipeGui(String outputId, Object... results) {
+        ItemPanels.historyPanel.addHistorys(((ItemStack) results[0]).copy());
         return openRecipeGui(outputId, false, results);
     }
 
@@ -29,7 +30,6 @@ public class GuiCraftingRecipe extends GuiRecipe<ICraftingHandler> {
         BookmarkRecipeId recipeId = (NEIClientConfig.saveCurrentRecipeInBookmarksEnabled() && "item".equals(outputId))
                 ? getRecipeId(mc.currentScreen, (ItemStack) results[0])
                 : getCurrentRecipe();
-
         if (overlay && recipeId == null) return false;
 
         GuiCraftingRecipe gui = new GuiCraftingRecipe(handlers, recipeId);

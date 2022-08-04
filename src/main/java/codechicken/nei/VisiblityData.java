@@ -10,6 +10,12 @@ public class VisiblityData {
      * Bookmark panel and associated buttons
      */
     public boolean showBookmarkPanel = true;
+
+    /**
+     * History panel
+     */
+    public boolean showHistoryPanel = true;
+
     /**
      * Subset dropdown
      */

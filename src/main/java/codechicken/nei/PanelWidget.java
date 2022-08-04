@@ -105,7 +105,6 @@ public abstract class PanelWidget extends Widget {
         y = margin.y + paddingTop;
         w = margin.w - paddingLeft - paddingRight;
         h = margin.h - paddingTop - paddingBottom;
-
         final int header = resizeHeader(gui);
         final int footer = resizeFooter(gui);
 
@@ -303,7 +302,6 @@ public abstract class PanelWidget extends Widget {
                 } else if (button == 1) {
                     GuiUsageRecipe.openRecipeGui("item", item);
                 }
-
                 mouseDownSlot = -1;
                 return;
             }

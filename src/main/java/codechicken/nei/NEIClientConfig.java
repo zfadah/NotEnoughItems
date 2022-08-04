@@ -163,6 +163,11 @@ public class NEIClientConfig {
         tag.getTag("world.panels.items.top").getIntValue(0);
         tag.getTag("world.panels.items.bottom").getIntValue(0);
 
+        tag.getTag("world.panels.history.left").getIntValue(0);
+        tag.getTag("world.panels.history.right").getIntValue(0);
+        tag.getTag("world.panels.history.top").getIntValue(0);
+        tag.getTag("world.panels.history.bottom").getIntValue(0);
+
         API.addOption(new OptionOpenGui("world.panels", GuiPanelSettings.class));
 
         tag.getTag("inventory.profileRecipes").getBooleanValue(false);

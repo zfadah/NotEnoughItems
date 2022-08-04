@@ -47,6 +47,7 @@ import codechicken.nei.guihook.IContainerDrawHandler;
 import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.guihook.IContainerObjectHandler;
 import codechicken.nei.guihook.IContainerTooltipHandler;
+import codechicken.nei.history.HistoryPanel;
 import codechicken.nei.recipe.GuiRecipeTab;
 import codechicken.nei.recipe.RecipeCatalysts;
 import java.util.HashMap;
@@ -85,6 +86,7 @@ public class LayoutManager
     private static TreeSet<Widget> controlWidgets = new TreeSet<>(new WidgetZOrder(true));
 
     public static ItemPanel itemPanel;
+    public static HistoryPanel historyPanel;
     public static BookmarkPanel bookmarkPanel;
     public static SubsetWidget dropDown;
     public static PresetsWidget presetsPanel;
@@ -336,6 +338,9 @@ public class LayoutManager
 
         bookmarkPanel = ItemPanels.bookmarkPanel;
         bookmarkPanel.init();
+
+        historyPanel = ItemPanels.historyPanel;
+        historyPanel.init();
 
         dropDown = new SubsetWidget();
         presetsPanel = new PresetsWidget();
@@ -624,6 +629,9 @@ public class LayoutManager
             } else {
                 addWidget(itemPanel);
             }
+
+            addWidget(historyPanel);
+            historyPanel.setVisible();
 
             itemPanel.setVisible();
         }

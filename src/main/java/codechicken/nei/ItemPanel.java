@@ -82,6 +82,7 @@ public class ItemPanel extends PanelWidget {
 
     public static void updateItemList(ArrayList<ItemStack> newItems) {
         ((ItemPanelGrid) ItemPanels.itemPanel.getGrid()).setItems(newItems);
+        ;
         ItemPanels.itemPanel.realItems = newItems;
     }
 
@@ -151,7 +152,7 @@ public class ItemPanel extends PanelWidget {
     }
 
     public int getHeight(GuiContainer gui) {
-        return gui.height - getMarginTop(gui) - PADDING;
+        return gui.height - getMarginTop(gui) - PADDING - ItemsGrid.SLOT_SIZE * 3;
     }
 
     protected int resizeFooter(GuiContainer gui) {
