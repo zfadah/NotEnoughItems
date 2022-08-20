@@ -35,7 +35,7 @@ public class HistoryPanel extends PanelWidget {
         }
 
         protected void clear() {
-            newItems.clear();
+            realItems.clear();
         }
     }
 
@@ -53,6 +53,11 @@ public class HistoryPanel extends PanelWidget {
         w = margin.w;
         h = margin.h;
         size = w / ItemsGrid.SLOT_SIZE * h / ItemsGrid.SLOT_SIZE;
+        if (world != NEIClientConfig.world) {
+            world = NEIClientConfig.world;
+            ((HistoryPanelGrid) ItemPanels.historyPanel.getGrid()).clear();
+        }
+
         grid.setGridSize(x, y, w, h);
         grid.refresh(gui);
     }
@@ -114,6 +119,18 @@ public class HistoryPanel extends PanelWidget {
 
     @Override
     protected ItemStack getDraggedStackWithQuantity(int mouseDownSlot) {
+        ItemStack item = grid.getItem(mouseDownSlot);
+
+        if (item != null) {
+            int amount = NEIClientConfig.getItemQuantity();
+
+            if (amount == 0) {
+                amount = item.getMaxStackSize();
+            }
+
+            return NEIServerUtils.copyStack(item, amount);
+        }
+
         return null;
     }
 
@@ -128,7 +145,8 @@ public class HistoryPanel extends PanelWidget {
         if (items.size() == size) {
             items.remove(size - 1);
         }
-        items.add(0, stack);
+        stack.stackSize = 1;
+        items.add(0, stack.copy());
         ((HistoryPanelGrid) ItemPanels.historyPanel.getGrid()).setItems(items);
     }
 }

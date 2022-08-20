@@ -16,7 +16,6 @@ public class GuiUsageRecipe extends GuiRecipe<IUsageHandler> {
 
         BookmarkRecipeId recipeId = getCurrentRecipe();
         GuiUsageRecipe gui = new GuiUsageRecipe(handlers, recipeId);
-
         NEIClientUtils.mc().displayGuiScreen(gui);
 
         if (!NEIClientUtils.shiftKey()) {

@@ -20,9 +20,12 @@ public class RecipeItemInputHandler implements IContainerInputHandler {
         if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe"))
             return GuiCraftingRecipe.openRecipeGui("item", stackover.copy());
 
-        if (keyCode == NEIClientConfig.getKeyBinding("gui.usage"))
+        if (keyCode == NEIClientConfig.getKeyBinding("gui.usage")) {
+            ItemStack copy = stackover.copy();
+            copy.stackSize = 1;
+            ItemPanels.historyPanel.addHistorys(copy);
             return GuiUsageRecipe.openRecipeGui("item", stackover.copy());
-
+        }
         if (keyCode == NEIClientConfig.getKeyBinding("gui.bookmark")) {
             NEIClientConfig.logger.debug("Adding or removing {} from bookmarks", stackover.getDisplayName());
             List<PositionedStack> ingredients = null;

@@ -300,6 +300,9 @@ public abstract class PanelWidget extends Widget {
                 if (button == 0) {
                     GuiCraftingRecipe.openRecipeGui("item", item);
                 } else if (button == 1) {
+                    ItemStack copy = item.copy();
+                    copy.stackSize = 1;
+                    ItemPanels.historyPanel.addHistorys(copy);
                     GuiUsageRecipe.openRecipeGui("item", item);
                 }
                 mouseDownSlot = -1;

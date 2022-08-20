@@ -15,7 +15,15 @@ public class GuiCraftingRecipe extends GuiRecipe<ICraftingHandler> {
     public static ArrayList<ICraftingHandler> serialCraftingHandlers = new ArrayList<>();
 
     public static boolean openRecipeGui(String outputId, Object... results) {
-        ItemPanels.historyPanel.addHistorys(((ItemStack) results[0]).copy());
+        if (results.length != 0) {
+            try {
+                ItemStack result = (ItemStack) results[0];
+                result.stackSize = 1;
+                ItemPanels.historyPanel.addHistorys(result.copy());
+            } catch (ClassCastException e) {
+                NEIClientConfig.logger.warn(e.getStackTrace());
+            }
+        }
         return openRecipeGui(outputId, false, results);
     }
 
